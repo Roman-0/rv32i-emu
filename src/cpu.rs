@@ -1,9 +1,9 @@
-const DRAM_SIZE: u32 = 1024 * 1024 * 128; //size of
-
+use crate::dram::*;
+use crate::systembus::*;
 pub struct Cpu {
     pub register: [u32; 32],
     pub program_counter: u32,
-    pub dram: Vec<u8>, //vec of bytes
+    pub dram: Dram, //vec of bytes
 }
 
 impl Cpu {
@@ -26,7 +26,7 @@ impl Cpu {
             | ((self.dram[index + 3] as u32) << 24);
     }
 
-    pub fn execute(&mut self, instruction: u32) {
+    pub fn decode(&mut self, instruction: u32) {
         let opcode = instruction & 0x7f; //0b1111111, grabs rightmost 7 bits;
         let rd = ((instruction >> 7) & 0x1f) as usize; //0b11111, moves 7 bits and grabs right 5
         let rs1 = ((instruction >> 15) & 0x1f) as usize;

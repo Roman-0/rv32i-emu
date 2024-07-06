@@ -9,6 +9,8 @@ use std::io::{self, Read};
 use std::thread::panicking;
 
 mod cpu;
+mod dram;
+mod systembus;
 mod utils;
 
 fn main() -> io::Result<()> {
@@ -27,7 +29,7 @@ fn main() -> io::Result<()> {
     while cpu.program_counter < cpu.dram.len() as u32 {
         let instruction = cpu.fetch();
         cpu.program_counter += 4;
-        cpu.execute(instruction);
+        cpu.decode(instruction);
     }
     dump_registers(&cpu);
 
