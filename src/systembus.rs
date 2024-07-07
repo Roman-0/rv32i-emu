@@ -1,10 +1,15 @@
 use crate::dram::*;
 
 pub struct Bus {
-    dram: Dram,
+    pub dram: Dram,
 }
 
 impl Bus {
+    pub fn new(code: Vec<u8>) -> Self {
+        Self {
+            dram: Dram::new(code),
+        }
+    }
     pub fn load_word(&self, address: u32) -> Result<u32, ()> {
         if address >= DRAM_BASE {
             return Ok(self.dram.load_word(address));
